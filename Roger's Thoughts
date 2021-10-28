@@ -3,6 +3,7 @@ Roger's thoughts:
 import math
 
 //simple point class x and y. also a __eq__ for comparing two points
+
 class Point:
   def __init__(self, x, y):
     self.x = x
@@ -11,7 +12,7 @@ class Point:
     def __eq__(self, other) : 
         return self.__dict__ == other.__dict__
  
-//this holds the points its moving to and the direction is moving in (1,2,3,4)
+//Move Class will hold dist to goal, moveid (1,2,3,4), and point its moving to
 // 1 is forward
 // 2 is right
 // 3 is left
@@ -26,16 +27,19 @@ class Move:
   def __repr__(self):
     return "[" + str(self.dist) + ", " + str(self.move) + "]"
 
-start = Point(x, y)
+//these all get inistialized by project data given
+start = Point(x, y) 
 goal = Point(x, y)
 curr = Point(x, y)
-tileDist = .305
-
 obstacle = Point(x, y)
-obstacleArr = []
 
+//distance in meters for each tile
+tileDist = .305 
+
+obstacleArr = []
 pathArr = []
 possibleMoves = []
+visitedPoints = []
 
 
 *****************This to run it? idk if python needs a main() function?**********************
@@ -45,18 +49,20 @@ executePath(pathArr)
 
 ******************************************************************************************
 
-
 // This is how to make the path
 def makePath(start, goal, curr)
   curr = start
+  visitedPoints.append(curr)
   
   while curr != goal:
     pathArr.append(findNextMove(curr))
     curr = getPoint(curr, pathArr[-1])
+    visitedPoints.append(curr)
     
 return pathArr
         
-_______________________________________________________________________    
+_______________________________________________________________________
+
 // 1 is forward
 // 2 is right
 // 3 is left
@@ -78,7 +84,8 @@ def findNextMove(curr)
   
   //return best move option
   return bestMove 
-_________________________________________________________________
+____________________________________________________________________________
+
 def getBestMove(movesArr):
   //TODO need to implement bestMove to take based on obstacles check and 
   //no visiting repeat points, movesArr contains shortest path, move id, and point its going to 
@@ -104,7 +111,8 @@ def distBetweenPoints(pointA, pointB)
   return dist
 
 
-_____________________________________________________________________
+_______________________________________________________________________
+
 // This is how to execute a path created that is stored in an array
 // 1 is forward
 // 2 is right
@@ -118,8 +126,12 @@ def executePath(pathArr):
         MoveForward();
       case 2:
         RightTurn();
+        MoveForward();
       case 3:
         LeftTurn();
+        MoveForward();
       case 4:
-        TurnAround();
+      RightTurn();
+      RightTurn();
+      MoveForward();
     
