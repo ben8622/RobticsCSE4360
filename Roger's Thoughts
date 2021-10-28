@@ -1,0 +1,102 @@
+
+Roger's thoughts:
+import math
+
+class Point:
+  def __intit__(self, x, y):
+    self.x = x
+    self.y = y
+    
+    def __eq__(self, other) : 
+        return self.__dict__ == other.__dict__
+  
+class Move:
+  def __init__(self, point, move)
+    self.point = point
+    self.move = move
+
+start = Point()
+goal = Point()
+curr = Point()
+tileDist = .305
+
+obstacle = Point()
+obstacleArr = []
+
+pathArr = []
+possibleMoves = []
+
+
+// This is how to make the path
+def makePath (start, goal, curr)
+  curr = start
+  
+  while curr != goal:
+        
+    
+// 1 is forward
+// 2 is right
+// 3 is left
+// 4 is back
+def findNextMove()
+  for i in range(1,5):
+    possibleMovePoints.append(getPoint(curr, i)) //will create 4 points (one for each possible move)
+  
+  distances = []
+  
+  for point in possibleMovePoints:
+    distances.append(distBetweenPoints(point, goal)) //distance to goal from each point in possibleMovePoints
+    
+  shortestMove = 0
+  shortestDist = 0
+  count = 0
+  
+  for dist in distances
+  count += 1
+    if shortestDist < dist:
+      shortestDist == dist
+      shortestMove = count //this will end up holding the move with shortest path to goal
+  
+def getPoint(curr, move):
+  if move == 1: //forward
+    curr.x += tileDist
+  elif move == 2: //right
+    curr.y -= tileDist
+  elif move == 3: //left
+    curr.y += tileDist
+  elif move == 4: //back
+    curr.x -= tileDist
+  return curr
+
+
+
+def distBetweenPoints(pointA, pointB)
+  dist = math.hypot(pointA.x - pointB.x, pointA.y - pointB.y)
+  return dist
+
+
+_____________________________________________________________________
+// This is how to execute a path created that is stored in an array
+// 1 is forward
+// 2 is right
+// 3 is left
+// 4 is back
+
+path = []
+path.append(1)
+path.append(1)
+path.append(2)
+path.append(1)
+
+def executePath(path):
+  for move in path
+    match move:
+      case 1:
+        MoveForward();
+      case 2:
+        RightTurn();
+      case 3:
+        LeftTurn();
+      case 4:
+        TurnAround();
+    
