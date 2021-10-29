@@ -1,13 +1,16 @@
 import constant
+import copy
 
 class Node:
   def __init__(self):
     self.x = 0.0
     self.y = 0.0
+    self.man_val = None
     self.is_obstacle = False
     self.visited = False
     self.is_start = False
     self.is_goal = False
+
 
   def set_xy(self, x, y):
     self.x = x
@@ -18,12 +21,14 @@ class Node:
 
   def set_is_obstacle(self):
     self.is_obstacle = True
+    self.man_val = -1
 
   def set_is_start(self):
     self.is_start = True
 
   def set_is_goal(self):
     self.is_goal = True
+    self.man_val = 0
 
   def build_empty_map(self):
     empty_map = []
@@ -46,7 +51,7 @@ class Map:
         node.set_xy(x, y)
         empty_row.append(node)
       self.map.append(empty_row)
-      
+
   def print_map_coords(self):
     for i in range(constant.ROWS):
       for j in range(constant.COLS):
@@ -77,6 +82,13 @@ class Map:
         print(f'[ {temp} ]', end="")
       print("")
 
+  def print_manhattan_map(self):
+    for i in range(constant.ROWS):
+      for j in range(constant.COLS):
+        temp = self.map[i][j].man_val if self.map[i][j].man_val != None else ' '
+        print(f'[ {temp} ]', end="")
+      print("")
+
   def set_obstacles(self):
     for obstacle in constant.TEST_OBSTACLES:
       if obstacle[0] == -1: continue
@@ -96,3 +108,26 @@ class Map:
           node.set_is_start()
         elif((node.x, node.y) == goal):
           node.set_is_goal()
+  
+  def set_man_values(self):
+    for m in range(constant.ROWS * constant.COLS):
+      temp = copy.deepcopy(self.map)
+      
+      for i in range(constant.ROWS):
+        for j in range(constant.COLS):
+          if(self.map[i][j].man_val != None):
+            continue
+
+          if j+1 != constant.COLS and temp[i][j+1].man_val != None and temp[i][j+1].man_val != -1:
+            self.map[i][j].man_val = temp[i][j+1].man_val + 1
+
+          elif j-1 != -1 and temp[i][j-1].man_val != None and temp[i][j-1].man_val != -1:
+            self.map[i][j].man_val = temp[i][j-1].man_val + 1
+
+          elif i+1 != constant.ROWS and temp[i+1][j].man_val != None and temp[i+1][j].man_val != -1:
+            self.map[i][j].man_val = temp[i+1][j].man_val + 1
+
+          elif i-1 != -1 and temp[i-1][j].man_val != None and temp[i-1][j].man_val != -1:
+            self.map[i][j].man_val = temp[i-1][j].man_val + 1
+
+      
