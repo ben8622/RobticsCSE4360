@@ -50,4 +50,5 @@ class Map:
       if obstacle[0] == -1: continue
       obs_x = round(obstacle[0] * constant.METERS_TO_FEET, 2)
       obs_y = round(obstacle[1] * constant.METERS_TO_FEET, 2)
+      print(f'({obstacle[0]},{obstacle[1]})', end=" | ")
       print(f'({obs_x},{obs_y})')
