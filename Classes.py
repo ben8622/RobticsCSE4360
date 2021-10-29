@@ -44,3 +44,10 @@ class Map:
       for j in range(constant.COLS):
         print(f'({self.map[i][j].x},{self.map[i][j].y})', end="")
       print("")
+
+  def add_obstacles(self):
+    for obstacle in constant.OBSTACLES:
+      if obstacle[0] == -1: continue
+      obs_x = round(obstacle[0] * constant.METERS_TO_FEET, 2)
+      obs_y = round(obstacle[1] * constant.METERS_TO_FEET, 2)
+      print(f'({obs_x},{obs_y})')
