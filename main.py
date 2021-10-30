@@ -3,6 +3,7 @@ from pybricks.hubs import EV3Brick
 from pybricks.ev3devices import Motor
 from pybricks.parameters import Port, Stop, Direction
 import constant
+import Classes
 
 # Initialize the EV3 brick.
 ev3 = EV3Brick()
@@ -10,40 +11,35 @@ ev3 = EV3Brick()
 left_motor = Motor(Port.D)
 right_motor = Motor(Port.A)
 
-def turn_right(ms):
-  left_motor.run_time(-100, ms, Stop.HOLD, False)
-  right_motor.run_time(100, ms, Stop.HOLD, True)
-def turn_left(ms):
-  left_motor.run_time(100, ms, Stop.HOLD, False)
-  right_motor.run_time(-100, ms, Stop.HOLD, True)
-def move_forward(ms):
-  left_motor.run_time(250, ms, Stop.HOLD, False)
-  right_motor.run_time(250, ms, Stop.HOLD, True)
+def turn_right():
+  left_motor.run_time(-constant.TURN_SPEED, constant.TURN_TIME, Stop.HOLD, False)
+  right_motor.run_time(constant.TURN_SPEED+2, constant.TURN_TIME, Stop.HOLD, True)
+def turn_left():
+  left_motor.run_time(constant.TURN_SPEED, constant.TURN_TIME, Stop.HOLD, False)
+  right_motor.run_time(-constant.TURN_SPEED-2, constant.TURN_TIME, Stop.HOLD, True)
+def move_forward():
+  left_motor.run_time(constant.MOVE_SPEED, constant.MOVE_TIME, Stop.HOLD, False)
+  right_motor.run_time(constant.MOVE_SPEED+2, constant.MOVE_TIME, Stop.HOLD, True)
 def move_backward(ms):
   left_motor.run_time(-250, ms, Stop.HOLD, False)
   right_motor.run_time(-250, ms, Stop.HOLD, True)
 
-# class Node:
-#   def __init__(self):
-#     self.x = 0.0
-#     self.y = 0.0
-#     self.is_object = False
-#     self.visited = False
+def perform_commands(commands):
+  for command in commands:
+    if(command == "turn_right"): turn_right()
+    elif(command == "turn_left"): turn_left()
+    elif(command == "move"): move_forward()
 
-#   def set_xy(self, x, y):
-#     self.x = x
-#     self.y = y
-
-#   def set_visited(self):
-#     self.visited = True
-
-#   def set_is_object(self):
-#     self.is_object = True
-
-
+map = Classes.Map()
+map.set_obstacles()
+map.set_start_and_goal()
+map.set_man_values()
 
 # Sound to signify start
 ev3.speaker.beep()
-
+while(not map.visited_goal()):
+  commands = map.next_node()
+  perform_commands(commands)
+#perform_commands(['turn_right', 'turn_left', 'move'])
 # Play another beep sound.
 ev3.speaker.beep(1000, 500)
