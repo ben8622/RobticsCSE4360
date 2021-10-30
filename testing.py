@@ -22,3 +22,5 @@ while(not map.visited_goal()):
   commands = map.next_node()
   print(commands)
 map.print_visited_map()
+map.print_map_coords()
+print(constant.ROWS/2)

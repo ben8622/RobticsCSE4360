@@ -69,18 +69,18 @@ class Map:
     return ret
 
 
-  # def print_map_coords(self):
-  #   for i in range(constant.ROWS):
-  #     for j in range(constant.COLS):
-  #       print(f'({self.map[i][j].x},{self.map[i][j].y})', end="")
-  #     print("")
+  def print_map_coords(self):
+    for i in range(constant.ROWS):
+      for j in range(constant.COLS):
+        print(f'({self.map[i][j].x},{self.map[i][j].y})', end="")
+      print("")
 
-  # def print_obstacle_map(self):
-  #   for i in range(constant.ROWS):
-  #     for j in range(constant.COLS):
-  #       is_obstacle = 1 if self.map[i][j].is_obstacle else 0
-  #       print(f'[ {is_obstacle} ]', end="")
-  #     print("")
+  def print_obstacle_map(self):
+    for i in range(constant.ROWS):
+      for j in range(constant.COLS):
+        is_obstacle = 1 if self.map[i][j].is_obstacle else 0
+        print(f'[ {is_obstacle} ]', end="")
+      print("")
 
   # def print_start_and_goal_map(self):
   #   for i in range(constant.ROWS):
@@ -106,14 +106,14 @@ class Map:
   #       print(f'[ {temp} ]', end="")
   #     print("")
 
-  # def print_visited_map(self):
-  #   for i in range(constant.ROWS):
-  #     for j in range(constant.COLS):
-  #       if(self.map[i][j].is_start): print(' O ', end="")
-  #       elif(self.map[i][j].is_goal): print(' X ', end="")
-  #       elif(self.map[i][j].visited): print(' - ', end="")
-  #       else: print('   ', end="")
-  #     print("")
+  def print_visited_map(self):
+    for i in range(constant.ROWS):
+      for j in range(constant.COLS):
+        if(self.map[i][j].is_start): print(' O ', end="")
+        elif(self.map[i][j].is_goal): print(' X ', end="")
+        elif(self.map[i][j].visited): print(' - ', end="")
+        else: print('   ', end="")
+      print("")
 
   def set_obstacles(self):
     for obstacle in constant.TEST_OBSTACLES:
