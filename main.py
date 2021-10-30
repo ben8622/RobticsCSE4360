@@ -30,16 +30,21 @@ def perform_commands(commands):
     elif(command == "turn_left"): turn_left()
     elif(command == "move"): move_forward()
 
-map = Classes.Map()
-map.set_obstacles()
-map.set_start_and_goal()
-map.set_man_values()
+ev3.speaker.beep(500, 450)
+# map = Classes.Map()
+# map.set_obstacles()
+# map.set_start_and_goal()
+# map.set_man_values()
 
 # Sound to signify start
 ev3.speaker.beep()
-while(not map.visited_goal()):
-  commands = map.next_node()
-  perform_commands(commands)
+move_forward()
+move_forward()
+
+turn_right()
+# while(not map.visited_goal()):
+#   commands = map.next_node()
+#   perform_commands(commands)
 #perform_commands(['turn_right', 'turn_left', 'move'])
 # Play another beep sound.
 ev3.speaker.beep(1000, 500)

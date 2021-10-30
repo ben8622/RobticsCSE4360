@@ -68,19 +68,27 @@ class Map:
       ret.append(temp_row)
     return ret
 
+  # def print_obstacles_in_ft(self):
+  #   for obstacle in constant.OBSTACLES:
+  #     obstacle = (obstacle[0]*constant.METERS_TO_FEET, obstacle[1]*constant.METERS_TO_FEET)
+  #     print(obstacle)
+  # def print_startgoal_in_ft(self):
+  #   print(constant.START[0]*constant.METERS_TO_FEET, constant.START[1]*constant.METERS_TO_FEET)
+  #   print(constant.GOAL[0]*constant.METERS_TO_FEET, constant.GOAL[1]*constant.METERS_TO_FEET)
 
-  def print_map_coords(self):
-    for i in range(constant.ROWS):
-      for j in range(constant.COLS):
-        print(f'({self.map[i][j].x},{self.map[i][j].y})', end="")
-      print("")
 
-  def print_obstacle_map(self):
-    for i in range(constant.ROWS):
-      for j in range(constant.COLS):
-        is_obstacle = 1 if self.map[i][j].is_obstacle else 0
-        print(f'[ {is_obstacle} ]', end="")
-      print("")
+  # def print_map_coords(self):
+  #   for i in range(constant.ROWS):
+  #     for j in range(constant.COLS):
+  #       print(f'({self.map[i][j].x},{self.map[i][j].y})', end="")
+  #     print("")
+
+  # def print_obstacle_map(self):
+  #   for i in range(constant.ROWS):
+  #     for j in range(constant.COLS):
+  #       is_obstacle = 'X' if self.map[i][j].is_obstacle else ' '
+  #       print(f'[ {is_obstacle} ]', end="")
+  #     print("")
 
   # def print_start_and_goal_map(self):
   #   for i in range(constant.ROWS):
@@ -106,28 +114,51 @@ class Map:
   #       print(f'[ {temp} ]', end="")
   #     print("")
 
-  def print_visited_map(self):
-    for i in range(constant.ROWS):
-      for j in range(constant.COLS):
-        if(self.map[i][j].is_start): print(' O ', end="")
-        elif(self.map[i][j].is_goal): print(' X ', end="")
-        elif(self.map[i][j].visited): print(' - ', end="")
-        else: print('   ', end="")
-      print("")
+  # def print_visited_map(self):
+  #   for i in range(constant.ROWS):
+  #     for j in range(constant.COLS):
+  #       if(self.map[i][j].is_start): print(' O ', end="")
+  #       elif(self.map[i][j].is_goal): print(' X ', end="")
+  #       elif(self.map[i][j].visited): print(' - ', end="")
+  #       else: print('   ', end="")
+  #     print("")
 
   def set_obstacles(self):
-    for obstacle in constant.TEST_OBSTACLES:
+    #for obstacle in constant.TEST_OBSTACLES:
+    for obstacle in constant.OBSTACLES:
       if obstacle[0] == -1: continue
       obs_x = round(obstacle[0] * constant.METERS_TO_FEET, 2)
       obs_y = round(obstacle[1] * constant.METERS_TO_FEET, 2)
-      for row in self.map:
-        for node in row:
+      for i in range(constant.ROWS):
+        for j in range(constant.COLS):
+          node = self.map[i][j]
           if(node.x == obs_x and node.y == obs_y):
             node.set_is_obstacle()
-          elif(node.y == constant.ROWS/2)
+            self.set_obstacles_neighbors(i, j) ## used to add additional padding against the obstacles
+            
+          elif(node.y == constant.ROWS/2):
             node.set_is_obstacle()
-          elif(node.x == 0)
+          elif(node.x == 0):
             node.set_is_obstacle()
+
+  def set_obstacles_neighbors(self, i, j):
+    if(i+1 != constant.ROWS):
+      self.map[i+1][j].set_is_obstacle()
+    if(j+1 != constant.COLS):
+      self.map[i][j+1].set_is_obstacle()
+    if(i-1 != -1):
+      self.map[i-1][j].set_is_obstacle()
+    if(j-1 != -1):
+      self.map[i][j-1].set_is_obstacle()
+    if(i+1 != constant.ROWS and j+1 != constant.COLS):
+      self.map[i+1][j+1].set_is_obstacle()
+    if(i+1 != constant.ROWS and j-1 != -1):
+      self.map[i+1][j-1].set_is_obstacle()
+    if(i-1 != -1 and j+1 != constant.COLS):
+      self.map[i-1][j+1].set_is_obstacle()
+    if(i-1 != -1 and j-1 != -1):
+      self.map[i-11][j-1].set_is_obstacle()
+
 
   # def set_start_and_goal(self):
   #   self.start = ( round(constant.START[0] * constant.METERS_TO_FEET, 2), round(constant.START[1] * constant.METERS_TO_FEET, 2) )

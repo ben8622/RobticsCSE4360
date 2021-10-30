@@ -3,8 +3,10 @@ NINETY_DEGREE_TURN = 2600 # miliseconds
 METERS_TO_FEET = 3.2808
 
 # Node for every half foot
-ROWS = 10
-COLS = 16
+#ROWS = 10
+ROWS = 20
+#COLS = 16
+COLS = 32
 OBSTACLES = [
   (0.61, 2.743),(0.915, 2.743),(1.219, 2.743),
   (1.829, 1.219),(1.829, 1.524),( 1.829, 1.829), 
@@ -15,14 +17,17 @@ OBSTACLES = [
   (-1,-1),(-1,-1),(-1,-1),
   (-1,-1),(-1,-1),(-1,-1),
   (-1,-1)]
-GOAL = (2.134, 0.305)
+
+# GOAL = (2.134, 0.305)
+GOAL = (3.658, 1.829)
+# START = (0.305, 1.219)
 START = (0.305, 1.219)
 
 TURN_TIME = 1425
 TURN_SPEED = 200
 
 #MOVE_TIME = 2650
-MOVE_TIME = 1450
+MOVE_TIME = 1500
 MOVE_SPEED = 500
 
 TEST_OBSTACLES = [(1.219, 0.61), (1.372, 0.61), (1.524, 0.763),(1.524, 0.915), (1.524, 1.068), (1.524, 1.219), (1.524, 1.372)]
