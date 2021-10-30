@@ -124,6 +124,10 @@ class Map:
         for node in row:
           if(node.x == obs_x and node.y == obs_y):
             node.set_is_obstacle()
+          elif(node.y == constant.ROWS/2)
+            node.set_is_obstacle()
+          elif(node.x == 0)
+            node.set_is_obstacle()
 
   # def set_start_and_goal(self):
   #   self.start = ( round(constant.START[0] * constant.METERS_TO_FEET, 2), round(constant.START[1] * constant.METERS_TO_FEET, 2) )
