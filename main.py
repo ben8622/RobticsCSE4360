@@ -10,16 +10,17 @@ ev3 = EV3Brick()
 # Initialize a motor at port B.
 left_motor = Motor(Port.D)
 right_motor = Motor(Port.A)
+ev3.speaker.beep(500, 450)
 
 def turn_right():
   left_motor.run_time(-constant.TURN_SPEED, constant.TURN_TIME, Stop.HOLD, False)
-  right_motor.run_time(constant.TURN_SPEED+2, constant.TURN_TIME, Stop.HOLD, True)
+  right_motor.run_time(constant.TURN_SPEED-3, constant.TURN_TIME, Stop.HOLD, True)
 def turn_left():
   left_motor.run_time(constant.TURN_SPEED, constant.TURN_TIME, Stop.HOLD, False)
-  right_motor.run_time(-constant.TURN_SPEED-2, constant.TURN_TIME, Stop.HOLD, True)
+  right_motor.run_time(-constant.TURN_SPEED+3, constant.TURN_TIME, Stop.HOLD, True)
 def move_forward():
   left_motor.run_time(constant.MOVE_SPEED, constant.MOVE_TIME, Stop.HOLD, False)
-  right_motor.run_time(constant.MOVE_SPEED+2, constant.MOVE_TIME, Stop.HOLD, True)
+  right_motor.run_time(constant.MOVE_SPEED-3, constant.MOVE_TIME, Stop.HOLD, True)
 def move_backward(ms):
   left_motor.run_time(-250, ms, Stop.HOLD, False)
   right_motor.run_time(-250, ms, Stop.HOLD, True)
@@ -30,21 +31,20 @@ def perform_commands(commands):
     elif(command == "turn_left"): turn_left()
     elif(command == "move"): move_forward()
 
-ev3.speaker.beep(500, 450)
-# map = Classes.Map()
-# map.set_obstacles()
-# map.set_start_and_goal()
-# map.set_man_values()
+map = Classes.Map()
+map.set_obstacles()
+map.set_start_and_goal()
+map.set_man_values()
 
 # Sound to signify start
 ev3.speaker.beep()
-move_forward()
-move_forward()
+# move_forward()
+# turn_right()
+# turn_left()
 
-turn_right()
-# while(not map.visited_goal()):
-#   commands = map.next_node()
-#   perform_commands(commands)
-#perform_commands(['turn_right', 'turn_left', 'move'])
+while(not map.visited_goal()):
+  commands = map.next_node()
+  perform_commands(commands)
+
 # Play another beep sound.
 ev3.speaker.beep(1000, 500)
