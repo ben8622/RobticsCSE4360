@@ -157,7 +157,7 @@ class Map:
     if(i-1 != -1 and j+1 != constant.COLS):
       self.map[i-1][j+1].set_is_obstacle()
     if(i-1 != -1 and j-1 != -1):
-      self.map[i-11][j-1].set_is_obstacle()
+      self.map[i-1][j-1].set_is_obstacle()
 
 
   # def set_start_and_goal(self):
