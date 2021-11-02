@@ -3,6 +3,7 @@ from pybricks.hubs import EV3Brick
 from pybricks.ev3devices import Motor
 from pybricks.parameters import Port, Stop, Direction
 import constant
+import time
 import Classes
 
 # Initialize the EV3 brick.
@@ -38,13 +39,19 @@ map.set_man_values()
 
 # Sound to signify start
 ev3.speaker.beep()
-# move_forward()
-# turn_right()
-# turn_left()
 
-while(not map.visited_goal()):
-  commands = map.next_node()
-  perform_commands(commands)
+move_forward()
+time.sleep(1)
+
+turn_right()
+time.sleep(1)
+
+turn_left()
+time.sleep(1)
+
+# while(not map.visited_goal()):
+#   commands = map.next_node()
+#   perform_commands(commands)
 
 # Play another beep sound.
 ev3.speaker.beep(1000, 500)
