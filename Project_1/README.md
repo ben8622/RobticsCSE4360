@@ -1,2 +1,2 @@
-# RobticsCSE4360
-Repository for all Homeworks and Projects for CSE4360 with Manfred Hubner 
+# Project 1 Pathfind
+Please refer to the writeup for a more detailed description of our solution to the pathfinding.
