@@ -127,8 +127,8 @@ class Map:
     #for obstacle in constant.TEST_OBSTACLES:
     for obstacle in constant.OBSTACLES:
       if obstacle[0] == -1: continue
-      obs_x = round(obstacle[0] * constant.METERS_TO_FEET, 2)
-      obs_y = round(obstacle[1] * constant.METERS_TO_FEET, 2)
+      obs_x = round(obstacle[0] * constant.METERS_TO_FEET, 1)
+      obs_y = round(obstacle[1] * constant.METERS_TO_FEET, 1)
       for i in range(constant.ROWS):
         for j in range(constant.COLS):
           node = self.map[i][j]
@@ -158,6 +158,16 @@ class Map:
       self.map[i-1][j+1].set_is_obstacle()
     if(i-1 != -1 and j-1 != -1):
       self.map[i-1][j-1].set_is_obstacle()
+    if(i+1 != constant.ROWS and j+2 != constant.COLS):
+      self.map[i+1][j+2].set_is_obstacle()
+    if(i-1 != -1 and j-2 >= 0):
+      self.map[i-1][j-2].set_is_obstacle()
+    if(i-2 >= 0 and j-1 >= 0):
+      self.map[i-2][j-1].set_is_obstacle()
+    if(i-2 >= 0 and j-2 >= 0):
+      self.map[i-2][j-2].set_is_obstacle()
+    if(i+2 < constant.ROWS and j-2 >= 0):
+      self.map[i+2][j-2].set_is_obstacle()
 
 
   # def set_start_and_goal(self):
@@ -171,8 +181,8 @@ class Map:
   #         node.set_is_goal()
 
   def set_start_and_goal(self):
-    self.start = ( round(constant.START[0] * constant.METERS_TO_FEET, 2), round(constant.START[1] * constant.METERS_TO_FEET, 2) )
-    self.goal = ( round(constant.GOAL[0] * constant.METERS_TO_FEET, 2), round(constant.GOAL[1] * constant.METERS_TO_FEET, 2) )
+    self.start = ( round(constant.START[0] * constant.METERS_TO_FEET, 1), round(constant.START[1] * constant.METERS_TO_FEET, 1) )
+    self.goal = ( round(constant.GOAL[0] * constant.METERS_TO_FEET, 1), round(constant.GOAL[1] * constant.METERS_TO_FEET, 1) )
     for i in range(constant.ROWS):
       for j in range(constant.COLS):
         node = self.map[i][j]

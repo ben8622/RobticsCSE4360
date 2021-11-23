@@ -13,7 +13,6 @@ map.print_complete_map()
 ## Do the "local" path finding
 while(not map.visited_goal()):
   commands = map.next_node()
-  print(commands)
 
 ## Print nodes that have been visited
 map.print_visited_map()
