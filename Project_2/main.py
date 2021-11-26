@@ -39,19 +39,33 @@ def stop():
   left_motor.stop()
   right_motor.stop()
   left_motor.hold()
-  right_motor.hold()
+  right_motor.hold() 
 
 
 ev3.speaker.say("Starting program")
 
-while True:
+wall_found = False
+
+while not wall_found:
   nxt_reflection = nxt_sensor.reflection()
   ev3_reflection = ev3_sensor.reflection()
 
   if(nxt_reflection  <= const.NXT_DETECT):
     stop()
     ev3.speaker.say("Wall Found")
+    wall_found = True
   else:
     wander()
 
   wait(5)
+
+while wall_found:
+  nxt_reflection = nxt_sensor.reflection()
+  ev3_reflection = ev3_sensor.reflection()
+
+  if(nxt_reflection <= const.NXT_DETECT):
+    right_motor.stop()
+    left_motor.run(-100)
+  else:
+    left_motor.stop()
+    right_motor(-100)
