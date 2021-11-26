@@ -44,11 +44,20 @@ def wander():
     wander_counter = wander_counter + .1
   if(going_straight == 200):
     wander_counter = 0
+
 def stop():
   left_motor.stop()
   right_motor.stop()
   left_motor.hold()
-  right_motor.hold() 
+  right_motor.hold()
+
+def follow_wall():
+  if(nxt_reflection <= const.NXT_DETECT):
+    right_motor.stop()
+    left_motor.run(-100)
+  else:
+    left_motor.stop()
+    right_motor.run(-100)
 
 
 ev3.speaker.say("Starting program")
@@ -73,11 +82,6 @@ while wall_found:
   nxt_reflection = nxt_sensor.reflection()
   ev3_reflection = ev3_sensor.reflection()
 
-  if(nxt_reflection <= const.NXT_DETECT):
-    right_motor.stop()
-    left_motor.run(-100)
-  else:
-    left_motor.stop()
-    right_motor.run(-100)
+  follow_wall(nxt_reflection, ev3_reflection)
 
   wait(5)
