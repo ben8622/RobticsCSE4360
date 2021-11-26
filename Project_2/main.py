@@ -26,15 +26,24 @@ right_motor = Motor(Port.C)
 # Used to make robot wander a bigger and bigger circle
 # until a straight line is done
 wander_counter = 0
+going_straight = 0
 
 # Behavior functions
 def wander():
-  left_motor.run(-200 + wander_counter)
-  right_motor.run(-50)
-  if( wander_counter == 150 ):
-    wander_counter = 0
+  global wander_counter
+  global going_straight
+  left_motor.run(-400 + wander_counter)
+  right_motor.run(-250)
+
+  # Radius of our circle gets biger until
+  # we are driving straight, then we drive
+  # straight for 1 seconds (5ms * 200 = 2s)
+  if(wander_counter >= 150):
+    going_straight += 1
   else:
-    wander_counter += 1
+    wander_counter = wander_counter + .1
+  if(going_straight == 200):
+    wander_counter = 0
 def stop():
   left_motor.stop()
   right_motor.stop()
@@ -59,6 +68,7 @@ while not wall_found:
 
   wait(5)
 
+#wall follwing func
 while wall_found:
   nxt_reflection = nxt_sensor.reflection()
   ev3_reflection = ev3_sensor.reflection()
@@ -68,4 +78,6 @@ while wall_found:
     left_motor.run(-100)
   else:
     left_motor.stop()
-    right_motor(-100)
+    right_motor.run(-100)
+
+  wait(5)
