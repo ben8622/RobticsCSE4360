@@ -7,6 +7,7 @@ from pybricks.parameters import Port, Stop, Direction, Button, Color
 from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
+import constants as const
 
 
 # This program requires LEGO EV3 MicroPython v2.0 or higher.
@@ -16,20 +17,41 @@ from pybricks.media.ev3dev import SoundFile, ImageFile
 # Create your objects here.
 ev3 = EV3Brick()
 
-# Initialize Sensors
+# Initialize Sensors & Motors
 nxt_sensor = LightSensor(Port.S1)
 ev3_sensor = ColorSensor(Port.S4)
+left_motor = Motor(Port.D)
+right_motor = Motor(Port.C)
+
+# Used to make robot wander a bigger and bigger circle
+# until a straight line is done
+wander_counter = 0
+
+# Behavior functions
+def wander():
+  left_motor.run(-200 + wander_counter)
+  right_motor.run(-50)
+  if( wander_counter == 150 ):
+    wander_counter = 0
+  else:
+    wander_counter += 1
+def stop():
+  left_motor.stop()
+  right_motor.stop()
+  left_motor.hold()
+  right_motor.hold()
 
 
-# Write your program here.
 ev3.speaker.say("Starting program")
 
 while True:
   nxt_reflection = nxt_sensor.reflection()
   ev3_reflection = ev3_sensor.reflection()
 
-  ev3.screen.print("nxt_reflection = " + str(nxt_reflection))
-  ev3.screen.print("ev3_reflection = " + str(ev3_reflection))
+  if(nxt_reflection  <= const.NXT_DETECT):
+    stop()
+    ev3.speaker.say("Wall Found")
+  else:
+    wander()
 
-  wait(100)
-  ev3.screen.clear()
+  wait(5)
