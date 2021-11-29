@@ -110,6 +110,9 @@ def turn_180_right():
 def turn_90_right():
   left_motor.run_time(-const.TURN_SPEED_180, const.TURN_TIME_90, Stop.HOLD, False)
   right_motor.run_time(const.TURN_SPEED_180, const.TURN_TIME_90, Stop.HOLD, True)
+def turn_90_left():
+  left_motor.run_time(const.TURN_SPEED_180, const.TURN_TIME_90, Stop.HOLD, False)
+  right_motor.run_time(-const.TURN_SPEED_180, const.TURN_TIME_90, Stop.HOLD, True)
 def turn_180_left():
   left_motor.run_time(const.TURN_SPEED_180, const.TURN_TIME_180, Stop.HOLD, False)
   right_motor.run_time(-const.TURN_SPEED_180, const.TURN_TIME_180, Stop.HOLD, True)
@@ -118,7 +121,7 @@ def detect_goal():
   global goal_found
   distance = us_sensor.distance() / 25.4
   color = ev3_sensor.color()
-  goal_found =  color == Color.RED or distance <= 12
+  goal_found =  color == Color.RED or distance <= 14
   return goal_found
 def check_for_goal():
   time = 0
@@ -139,6 +142,58 @@ def check_for_goal():
   
   stop()
 
+def face_goal():
+  turn_90_right()
+  time = 0
+  min_distance = 100
+  i=0
+  ## finds the minimum distance
+  while(i < 2):
+
+    while(time < 3000):
+      if( (us_sensor.distance() / 25.4) < min_distance):
+        stop()
+        min_distance = us_sensor.distance() / 25.4
+
+      left_motor.run(50)
+      right_motor.run(-50)
+      time += 5
+      wait(5)
+
+    stop()
+    time = 0
+
+    while(time < 3000):
+      if( (us_sensor.distance() / 25.4) < min_distance):
+        stop()
+        min_distance = us_sensor.distance() / 25.4
+
+      left_motor.run(-50)
+      right_motor.run(50)
+      time += 5
+      wait(5)
+
+    stop()
+    time = 0
+
+
+    i+=1
+  stop()
+
+  ## faces the object
+  time = 0
+  curr_distance = 0
+  while(not (abs(min_distance - curr_distance) < .25)):
+      curr_distance = us_sensor.distance() / 25.4
+
+      left_motor.run(50)
+      right_motor.run(-50)
+      time += 5
+      wait(5)
+  stop()
+  
+  return min_distance
+
 
 ev3.speaker.say("Starting program")
 
@@ -153,29 +208,23 @@ ev3.speaker.say("Starting program")
 
 while not goal_found:
   if(found_wall):
-    # time_passed += 10
     follow_wall()
   else:
     wander()
 
-  if(time_last_checked > 5000):
+  ## Check for goal every 5 seconds
+  if(time_last_checked > 2500):
     check_for_goal()
     time_last_checked = 0
-
-  # if(time_passed > 60000):
-  #   wander_counter = 0
-  #   going_straight = 0
-  #   found_wall = False
-  #   time_passed = 0
-  #   stop()
-  #   ev3.speaker.say("sixty seconds passed")
-  #   start_wander()
 
   time_last_checked +=  5
   wait(5)
 
 stop()
+
 ev3.speaker.say("Goal found!")
+
+face_goal()
 left_motor.run_time(-200, 5000, Stop.HOLD, False)
 right_motor.run_time(-200, 5000, Stop.HOLD, True)
 
