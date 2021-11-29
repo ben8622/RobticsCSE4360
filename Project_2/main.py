@@ -33,7 +33,7 @@ going_straight = 0
 def wander():
   global wander_counter
   global going_straight
-  left_motor.run(-200 )
+  left_motor.run(-200)
   right_motor.run(-50 - wander_counter)
 
   # Radius of our circle gets biger until
@@ -71,6 +71,9 @@ def follow_wall():
     left_motor.stop()
     right_motor.run(-100)
 
+def found_red():
+  return (ev3_sensor.color() == Color.RED)
+
 ev3.speaker.say("Starting program")
 
 wait_time = 300 #not using this yet
@@ -80,6 +83,11 @@ inches_const = 25.4
 
 #this gives distance in inches
 #us_sensor.distance() / 25.4
+
+while True:
+  if(found_red()):
+    print("Found RED!!!!")
+  
 
 while not goal_reached:
   if(found_wall()):
