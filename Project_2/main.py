@@ -199,21 +199,8 @@ while not goal_found:
     check_for_goal()
     time_last_checked = 0
 
-<<<<<<< HEAD
   time_last_checked +=  5
   wait(5)
-=======
-while True:
-  if(found_red()):
-    print("Found RED!!!!")
-  
-
-while not goal_reached:
-  if(found_wall()):
-    stop()
-    ev3.speaker.say("Wall Found")
-    wall_found = True
->>>>>>> b5c2f7421efbd29eb37b8ff7312d4eb77076ce68
 
 # Stop after goal is found
 stop()
