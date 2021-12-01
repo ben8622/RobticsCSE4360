@@ -38,7 +38,7 @@ def wander():
   if(wander_counter >= 150):
     going_straight += 1
   else:
-    wander_counter = wander_counter + 1
+    wander_counter = wander_counter + .1
   if(going_straight == 200):
     wander_counter = 0
     going_straight = 0
@@ -212,4 +212,3 @@ face_goal()
 # Move about 1.5 feet to displace the object
 left_motor.run_time(-200, 5250, Stop.HOLD, False)
 right_motor.run_time(-200, 5250, Stop.HOLD, True)
-
