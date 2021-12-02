@@ -76,16 +76,16 @@ def found_wall_right():
 def follow_wall():
   if(found_wall_left()):
     right_motor.stop()
-    left_motor.run(-200)
+    left_motor.run(-300)
 
     if(found_wall_left()):
       while found_wall_left():
-        right_motor.run(200)
+        right_motor.run(300)
       right_motor.stop()
 
   else:
     left_motor.stop()
-    right_motor.run(-200)
+    right_motor.run(-300)
     
 ##############################
 ##### MOVEMENT FUNCTIONS #####
@@ -118,7 +118,7 @@ def detect_goal():
   global goal_found
   distance = us_sensor.distance() / 25.4
   color = ev3_sensor.color()
-  goal_found = color == Color.RED or distance <= 18
+  goal_found = color == Color.RED or distance <= 16
   red_found = color == Color.RED 
   if(red_found):
     ev3.speaker.say("red tape")
@@ -221,7 +221,7 @@ def run_program():
       wander()
 
     ## Check for goal every 3 seconds
-    if(time_last_checked > 3000):
+    if(time_last_checked > 10000):
       check_for_goal()
       time_last_checked = 0
 
