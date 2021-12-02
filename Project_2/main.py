@@ -114,7 +114,10 @@ def detect_goal():
   global goal_found
   distance = us_sensor.distance() / 25.4
   color = ev3_sensor.color()
-  goal_found =  color == Color.RED or distance <= 14
+  goal_found = color == Color.RED or distance <= 18
+  red_found = color == Color.RED 
+  if(red_found):
+    ev3.speaker.say("red tape")
   return goal_found
 def check_for_goal():
   time = 0
@@ -187,28 +190,52 @@ def found_red():
 
 ev3.speaker.say("Starting program")
 
+def knock_goal():
+  while(not (found_wall_left() or found_wall_right())):
+    left_motor.run(-50)
+    right_motor.run(-50)
+    distance = us_sensor.distance() / 25.5
+    if(distance < 8):
+      stop()
+      ev3.speaker.say("Goal eight inches away")
+      left_motor.run_time(-200, 7000, Stop.HOLD, False)
+      right_motor.run_time(-200, 7000, Stop.HOLD, True)
+      ev3.speaker.say("mission accomplished")
+      quit()
+    
+  # right_motor.run(100)
+  # left_motor.run(-100)
+  run_program()
+
+def run_program():
+  global time_last_checked
+  global goal_found
+  global found_wall
+  found_wall = False
+  goal_found = False
+  while not goal_found:
+    if(found_wall):
+      follow_wall()
+    else: 
+      wander()
+
+    ## Check for goal every 3 seconds
+    if(time_last_checked > 3000):
+      check_for_goal()
+      time_last_checked = 0
+
+    time_last_checked +=  5
+    wait(5)
+
+  # Stop after goal is found
+  stop()
+  ev3.speaker.say("Goal found!")
+
+  # Orient robot to face the object
+  face_goal()
+
+  # Move about 1.5 feet to displace the object
+  knock_goal()
+
 # Wander until a wall is found, then wall follow checking for the object/goal every 3 seconds
-while not goal_found:
-  if(found_wall):
-    follow_wall()
-  else:
-    wander()
-
-  ## Check for goal every 3 seconds
-  if(time_last_checked > 3000):
-    check_for_goal()
-    time_last_checked = 0
-
-  time_last_checked +=  5
-  wait(5)
-
-# Stop after goal is found
-stop()
-ev3.speaker.say("Goal found!")
-
-# Orient robot to face the object
-face_goal()
-
-# Move about 1.5 feet to displace the object
-left_motor.run_time(-200, 5250, Stop.HOLD, False)
-right_motor.run_time(-200, 5250, Stop.HOLD, True)
+run_program()
