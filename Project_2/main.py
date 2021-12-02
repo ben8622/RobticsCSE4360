@@ -20,6 +20,7 @@ wander_counter = 0
 going_straight = 0
 time_passed = 0
 time_last_checked = 0
+time_last_wander = 0
 goal_found = False
 found_wall = False
 inches_const = 25.4
@@ -106,6 +107,9 @@ def turn_90_right():
 def turn_90_left():
   left_motor.run_time(const.TURN_SPEED_180, const.TURN_TIME_90, Stop.HOLD, False)
   right_motor.run_time(-const.TURN_SPEED_180, const.TURN_TIME_90, Stop.HOLD, True)
+def go_forward_6in():
+  left_motor.run_time(-100, 1500, Stop.HOLD, False)
+  right_motor.run_time(-100, 1500, Stop.HOLD, True)
 
 ##############################
 ####### GOAL FUNCTIONS #######
@@ -183,13 +187,8 @@ def face_goal():
   stop()
   
   return min_distance
-
-
 def found_red():
   return (ev3_sensor.color() == Color.RED)
-
-ev3.speaker.say("Starting program")
-
 def knock_goal():
   while(not (found_wall_left() or found_wall_right())):
     left_motor.run(-50)
@@ -198,17 +197,19 @@ def knock_goal():
     if(distance < 8):
       stop()
       ev3.speaker.say("Goal eight inches away")
-      left_motor.run_time(-200, 7000, Stop.HOLD, False)
-      right_motor.run_time(-200, 7000, Stop.HOLD, True)
+      left_motor.run_time(-200, 6000, Stop.HOLD, False)
+      right_motor.run_time(-200, 6000, Stop.HOLD, True)
       ev3.speaker.say("mission accomplished")
       quit()
-    
-  # right_motor.run(100)
-  # left_motor.run(-100)
+
   run_program()
+
+ev3.speaker.say("Starting program")
+
 
 def run_program():
   global time_last_checked
+  global time_last_wander
   global goal_found
   global found_wall
   found_wall = False
@@ -224,7 +225,16 @@ def run_program():
       check_for_goal()
       time_last_checked = 0
 
+    ## Wall following for 5 mins, try wandering again
+    if(time_last_wander > (60000 * 5)):
+      stop()
+      turn_90_right()
+      go_forward_6in()
+      time_last_wander = 0
+      found_wall = False
+
     time_last_checked +=  5
+    time_last_wander += 5
     wait(5)
 
   # Stop after goal is found
