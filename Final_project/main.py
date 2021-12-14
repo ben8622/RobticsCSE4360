@@ -23,32 +23,53 @@ left_motor = Motor(Port.D)
 right_motor = Motor(Port.A)
 color_sens = ColorSensor(Port.S1)
 light_sens = LightSensor(Port.S4)
-gyro_sens = GyroSensor(Port.S3, Direction.CLOCKWISE)
+gyro_sens = GyroSensor(Port.S3, Direction.COUNTERCLOCKWISE)
 
 
+# Methods
+def move_forward():
+  left_motor.run(100)
+  right_motor.run(100)
+
+def stop_motors():
+  left_motor.stop()
+  right_motor.stop()
+
+def read_gyro():
+  return gyro_sens.angle()
+
+def elevator_up():
+  elevator.run(-200)
+  wait(2000)
+  elevator.stop()
+
+def elevator_down():
+  elevator.run(200)
+  wait(2000)
+  elevator.stop()
+  
 # Write your program here.
 ev3.speaker.beep()
 
+
 while(True):
   # print(color_sens.color())
-  # print(gyro_sens.angle())
+  print(gyro_sens.angle())
   # print(light_sens.reflection())
 
+  move_forward()
 
-  if(touch_sens.pressed()):
-    print("pressed!")
-    elevator.run_time(-200, 5000, Stop.HOLD, True)
+  # if(read_gyro() > 0):
+  #   elevator_up()
+
+  if(read_gyro() <= 0):
+    gyro_sens.reset_angle(0)
+    #elevator_down()  
+
     # left_motor.run(100)
     # right_motor.run(100)
     # wait(1000)
     # left_motor.stop()
     # right_motor.stop()
 
-  if(ev3.buttons.pressed() == [Button.UP]):
-    elevator.run_time(1000, 5000, Stop.HOLD, True)
-
-  elif(ev3.buttons.pressed() == [Button.DOWN]):
-    elevator.run_time(-1000, 5000, Stop.HOLD, True)
-
-  ev3.screen.print(ev3.buttons.pressed())
-  
+  ev3.screen.print(gyro_sens.angle())
