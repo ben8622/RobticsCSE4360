@@ -60,11 +60,11 @@ def elevator_down():
 
 
 def zero_elevator():
-  elevator.run(-200)
+  elevator.run(-250)
   while(not is_pressed()):
     continue
   elevator.stop()
-  elevator.run_time(200, 9000, Stop.HOLD, True)
+  elevator.run_time(250, 9000, Stop.HOLD, True)
   gyro_sens.reset_angle(0)
 
   
@@ -76,15 +76,10 @@ zero_elevator()
 elevator_moving = False
 
 while(True):
-  # if(ev3.buttons.pressed() == [Button.UP]):
-  #   elevator.run_time(100, 500, Stop.HOLD, True)
-  # if(ev3.buttons.pressed() == [Button.DOWN]):
-  #   elevator.run_time(-100, 500, Stop.HOLD, True)
   if(read_gyro() > 20 and not elevator_moving):
     ev3.speaker.beep()
     elevator_up()
     elevator_down()
-    # zero_elevator()
 
   move_forward()
 
