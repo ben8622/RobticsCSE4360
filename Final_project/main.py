@@ -58,6 +58,10 @@ def elevator_down(time = 4000):
   wait(time)
   elevator.stop()
 
+def move_elevator(speed = -350, time = 3000):
+  elevator.run(speed)
+  wait(time)
+  elevator.stop()
 
 def zero_elevator():
   elevator.run(-250)
@@ -68,10 +72,9 @@ def zero_elevator():
   gyro_sens.reset_angle(0)
 
 def check_if_end():
-
   stop_all_motors()
   time = 0
-  while(time < 1500):
+  while(time < 500):
     if(ultrasonic_sens.distance() > 600):
       ev3.speaker.say("End of stairs")
       return True
@@ -79,33 +82,47 @@ def check_if_end():
     wait(5)
 
   return False
-    
-
   
+def on_tile():
+  return color_sens.reflection() > 25
+
 # Write your program here.
 ev3.speaker.beep()
 
-# zero_elevator()
-
-# elevator_moving = False
-
-# while(True):
-
-#   if(read_gyro() > 10 and not elevator_moving):
-#     ev3.speaker.beep()
-#     elevator_up()
-#     elevator_down()
-#     if check_if_end():
-#       break
-
-#   move_forward()
-
-# ev3.speaker.say("Going down stairs")
-# elevator_up(3000)
+zero_elevator()
 
 while(True):
-#   move_forward(-100)
-  ev3.screen.print(str(color_sens.color()))
-  # print("test")
+  if(read_gyro() > 7):
+    ev3.speaker.beep()
+    elevator_up()
+    elevator_down()
+    if check_if_end():
+      break
+
+  move_forward()
+
+ev3.speaker.say("Going down stairs")
+elevator_time = 3250
+elevator_speed = -350
+time = 0
+move_elevator(elevator_speed, elevator_time)
+
+move_forward(-100)
+while(True):
+  # if(color_sens.color() == Color.WHITE):
+  #   break
+  if(time >8000):
+    stop_all_motors()
+    zero_elevator()
+    if on_tile():
+      break
+    move_forward(-100)
+    time = 0
+
+  time += 5
+  wait(5)
+
+
+ev3.speaker.say("FINISHED")
   
 
